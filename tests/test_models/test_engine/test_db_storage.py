@@ -68,16 +68,15 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test the FileStorage class"""
+class TestDBStorage(unittest.TestCase):
+    """Test the DBStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
-        self.assertIs(type(models.storage.all()), dict)
-
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_no_class(self):
-        """Test that all returns all rows when no class is passed"""
+        storage = DBStorage()
+        new_dict = storage.all()
+        self.assertEqual(type(new_dict), dict)
+        self.assertIs(new_dict, storage._DBStorage__objects)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_new(self):
@@ -86,3 +85,29 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test that get properly return object with the gived id"""
+        storage = DBStorage()
+        for key, value in classes.items():
+            obj = value()
+            storage.new(obj)
+            self.assertEqual(obj, storage.get(key, obj.id))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """Test that count properly return number of objects """
+        storage = DBStorage()
+        all_count = storage.count()
+        state_count = storage.count(State)
+
+        obj = BaseModel()
+        storage.new(obj)
+        self.assertEqual(all_count + 1, storage.count())
+        self.assertEqual(state_count, storage.count(State))
+
+        obj2 = State()
+        storage.new(obj2)
+        self.assertEqual(all_count + 2, storage.count())
+        self.assertEqual(state_count + 1, storage.count(State))
