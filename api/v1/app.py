@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Endpoint that returns the status of the API """
 
+import os
 from models import storage
 from api.v1.views import app_views
 from flask import Flask
@@ -15,4 +16,5 @@ def teardown_db(exception):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5000', threaded=True)
+    app.run(host=os.getenv('HBNB_API_HOST', '0.0.0.0'),
+            port=os.getenv('HBNB_API_PORT', '5000'), threaded=True)
