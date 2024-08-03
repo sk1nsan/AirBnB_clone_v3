@@ -17,7 +17,6 @@ def places_by_city_id(city_id):
         for place in city.places:
             places.append(place.to_dict())
         return jsonify(places)
-    abort(404)
 
 
 @app_views.route('/places/<place_id>',
@@ -51,9 +50,11 @@ def create_place(city_id):
         abort(404)
     if (not request.is_json):
         abort(400, 'Not a JSON')
+    if ('user_id' not in request.get_json()):
+        abort(400, 'Missing user_id')
     user = storage.get("User", request.get_json()['user_id'])
     if (user is None):
-        abort(400, 'Missing user_id')
+        abort(404)
     if ('name' not in request.get_json()):
         abort(400, 'Missing name')
     obj = Place(**request.get_json())
@@ -67,11 +68,11 @@ def create_place(city_id):
 def update_place(place_id):
     """ upade the place by given id """
     ignore_keys = ['id', 'created_at', 'updated_at', 'city_id', 'user_id']
-
-    if (not request.is_json):
-        abort(400, 'Not a JSON')
     place = storage.get("Place", place_id)
+
     if (place):
+        if (not request.is_json):
+            abort(400, 'Not a JSON')
         for key, value in request.get_json().items():
             if (key in ignore_keys):
                 continue
