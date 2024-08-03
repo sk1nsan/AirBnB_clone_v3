@@ -3,9 +3,8 @@
 objects that handles all default RESTFul API actions """
 
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort
 from models import storage, storage_t
-from models.amenity import Amenity
 
 
 @app_views.route('/places/<place_id>/amenities',
