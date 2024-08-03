@@ -74,6 +74,7 @@ class TestDBStorage(unittest.TestCase):
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
         storage = DBStorage()
+        storage.reload()
         new_dict = storage.all()
         self.assertEqual(type(new_dict), dict)
         self.assertIs(new_dict, storage._DBStorage__objects)
@@ -90,6 +91,7 @@ class TestDBStorage(unittest.TestCase):
     def test_get(self):
         """Test that get properly return object with the gived id"""
         storage = DBStorage()
+        storage.reload()
         for key, value in classes.items():
             obj = value()
             storage.new(obj)
@@ -99,6 +101,7 @@ class TestDBStorage(unittest.TestCase):
     def test_count(self):
         """Test that count properly return number of objects """
         storage = DBStorage()
+        storage.reload()
         all_count = storage.count()
         state_count = storage.count(State)
 
