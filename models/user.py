@@ -30,6 +30,7 @@ class User(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
     def __setattr__(self, attr, value):
+        """ hash the password """
         if attr == 'password':
             super().__setattr__(attr,
                                 hashlib.md5(str.encode(value)).hexdigest())
