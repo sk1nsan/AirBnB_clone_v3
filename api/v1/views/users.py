@@ -63,11 +63,11 @@ def create_user():
 def update_user(user_id):
     """ upade the user by given id """
     ignore_keys = ['id', 'email', 'created_at', 'updated_at']
-
-    if (not request.is_json):
-        abort(400, 'Not a JSON')
     user = storage.get("User", user_id)
+
     if (user):
+        if (not request.is_json):
+            abort(400, 'Not a JSON')
         for key, value in request.get_json().items():
             if (key in ignore_keys):
                 continue
