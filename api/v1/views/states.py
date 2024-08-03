@@ -2,7 +2,7 @@
 """ index file"""
 
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from models import storage
 from models.state import State
 
@@ -49,9 +49,9 @@ def delete_state(state_id):
 def create_state():
     """ create a new state"""
     if (not request.get_json()):
-        abort(400, 'Not a JSON')
+        make_response('Not a JSON', 400)
     if ('name' not in request.get_json()):
-        abort(400, 'Missing name')
+        make_response('Missing name', 400)
     obj = State(name=request.get_json()['name'])
     storage.new(obj)
     storage.save()
@@ -66,7 +66,7 @@ def update_state(state_id):
     ignore_keys = ['id', 'created_at', 'updated_at']
 
     if (not request.get_json()):
-        abort(400, 'Not a JSON')
+        make_response('Not a JSON', 400)
     for state in storage.all("State").values():
         if (state.id == state_id):
             found = state
