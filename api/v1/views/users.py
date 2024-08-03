@@ -62,7 +62,7 @@ def create_user():
                  strict_slashes=False, methods=['PUT'])
 def update_user(user_id):
     """ upade the user by given id """
-    ignore_keys = ['id', 'created_at', 'updated_at']
+    ignore_keys = ['id', 'email', 'created_at', 'updated_at']
 
     if (not request.is_json):
         abort(400, 'Not a JSON')
