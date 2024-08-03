@@ -15,7 +15,6 @@ def amenities():
     for amenity in storage.all('Amenity').values():
         amenities.append(amenity.to_dict())
     return jsonify(amenities)
-    abort(404)
 
 
 @app_views.route('/amenities/<amenity_id>',
