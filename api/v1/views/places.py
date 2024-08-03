@@ -17,6 +17,7 @@ def places_by_city_id(city_id):
         for place in city.places:
             places.append(place.to_dict())
         return jsonify(places)
+    abort(404)
 
 
 @app_views.route('/places/<place_id>',
