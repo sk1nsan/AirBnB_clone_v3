@@ -15,7 +15,6 @@ def users():
     for user in storage.all('User').values():
         users.append(user.to_dict())
     return jsonify(users)
-    abort(404)
 
 
 @app_views.route('/users/<user_id>',
@@ -46,8 +45,6 @@ def create_user():
     """ create a new User"""
     if (not request.is_json):
         abort(400, 'Not a JSON')
-    if ('name' not in request.get_json()):
-        abort(400, 'Missing name')
     if ('email' not in request.get_json()):
         abort(400, 'Missing email')
     if ('password' not in request.get_json()):
