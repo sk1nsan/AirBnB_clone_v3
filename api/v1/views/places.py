@@ -59,6 +59,7 @@ def create_place(city_id):
     if ('name' not in request.get_json()):
         abort(400, 'Missing name')
     obj = Place(**request.get_json())
+    setattr(obj, "city_id", city_id)
     storage.new(obj)
     storage.save()
     return (jsonify(obj.to_dict()), 201)
