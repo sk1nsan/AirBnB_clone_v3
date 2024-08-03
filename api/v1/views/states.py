@@ -20,12 +20,9 @@ def states():
                  strict_slashes=False, methods=['GET'])
 def state_id(state_id):
     """ return the state by given id """
-    found = None
-    for state in storage.all("State").values():
-        if (state.id == state_id):
-            found = state
-    if (found):
-        return jsonify(found.to_dict())
+    state = storage.get("State", state_id)
+    if (state):
+        return jsonify(state.to_dict())
     abort(404)
 
 
@@ -33,12 +30,9 @@ def state_id(state_id):
                  strict_slashes=False, methods=['DELETE'])
 def delete_state(state_id):
     """ delete the state by given id """
-    found = None
-    for state in storage.all("State").values():
-        if (state.id == state_id):
-            found = state
-    if (found):
-        storage.delete(found)
+    state = storage.get("State", state_id)
+    if (state):
+        storage.delete(state)
         storage.save()
         return (jsonify({}), 200)
     abort(404)
